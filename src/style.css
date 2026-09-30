@@ -330,3 +330,27 @@ main {
   }
 
 }
+
+.mobile-controls {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.direction-btn {
+  width: 75px;
+  height: 65px;
+  margin: 6px;
+  border: none;
+  border-radius: 14px;
+  background: #7c3aed;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow: 0 5px 15px #00000055;
+}
+
+.direction-btn:active {
+  transform: scale(0.92);
+  background: #8b5cf6;
+}
