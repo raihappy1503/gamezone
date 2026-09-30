@@ -27,7 +27,6 @@ function showHome() {
       </nav>
     </header>
 
-
     <main>
 
       <section class="hero">
@@ -52,13 +51,11 @@ function showHome() {
 
         </div>
 
-
         <div class="hero-icon">
           🎮
         </div>
 
       </section>
-
 
       <section>
 
@@ -71,7 +68,6 @@ function showHome() {
           </span>
 
         </div>
-
 
         <div class="games">
 
@@ -123,32 +119,20 @@ function showHome() {
 
         const game = button.dataset.game;
 
-
         if (game === "Snake") {
-
           showSnake();
-
         }
-
 
         if (game === "Tetris") {
-
           alert("Tetris coming soon 🎮");
-
         }
-
 
         if (game === "Racing") {
-
           alert("Racing coming soon 🏎️");
-
         }
 
-
         if (game === "Quiz") {
-
           alert("Quiz coming soon 🧠");
-
         }
 
       });
@@ -156,7 +140,6 @@ function showHome() {
     });
 
 }
-
 
 
 // =========================
@@ -169,12 +152,10 @@ function showSnake() {
     { x: 10, y: 10 }
   ];
 
-
   let food = {
     x: 15,
     y: 10
   };
-
 
   let direction = "RIGHT";
 
@@ -191,11 +172,9 @@ function showSnake() {
         ← Back to GameZone
       </button>
 
-
       <h1>
         🐍 Snake Game
       </h1>
-
 
       <div class="score">
         Score:
@@ -204,19 +183,40 @@ function showSnake() {
         </span>
       </div>
 
-
       <div
         id="snakeBoard"
         class="snake-board">
       </div>
 
-
       <div id="snakeMessage"></div>
 
-
       <p class="instructions">
-        Use ⬆️ ⬇️ ⬅️ ➡️ keys to move
+        PC: Use Arrow Keys | Mobile: Use buttons
       </p>
+
+      <div class="mobile-controls">
+
+        <button class="direction-btn" data-dir="UP">
+          ⬆️
+        </button>
+
+        <div>
+
+          <button class="direction-btn" data-dir="LEFT">
+            ⬅️
+          </button>
+
+          <button class="direction-btn" data-dir="DOWN">
+            ⬇️
+          </button>
+
+          <button class="direction-btn" data-dir="RIGHT">
+            ➡️
+          </button>
+
+        </div>
+
+      </div>
 
     </div>
 
@@ -243,12 +243,9 @@ function showSnake() {
         "#snakeBoard"
       );
 
-
     if (!board) return;
 
-
     board.innerHTML = "";
-
 
     for (let y = 0; y < 20; y++) {
 
@@ -257,10 +254,8 @@ function showSnake() {
         const cell =
           document.createElement("div");
 
-
         cell.className =
           "snake-cell";
-
 
         const snakePart =
           snake.some(
@@ -269,7 +264,6 @@ function showSnake() {
               part.y === y
           );
 
-
         if (snakePart) {
 
           cell.classList.add(
@@ -277,7 +271,6 @@ function showSnake() {
           );
 
         }
-
 
         if (
           food.x === x &&
@@ -290,19 +283,16 @@ function showSnake() {
 
         }
 
-
         board.appendChild(cell);
 
       }
 
     }
 
-
     const scoreElement =
       document.querySelector(
         "#snakeScore"
       );
-
 
     if (scoreElement) {
 
@@ -314,6 +304,136 @@ function showSnake() {
   }
 
 
+  // CHANGE DIRECTION
+
+  function changeDirection(newDirection: string) {
+
+    if (
+      newDirection === "UP" &&
+      direction !== "DOWN"
+    ) {
+      direction = "UP";
+    }
+
+    if (
+      newDirection === "DOWN" &&
+      direction !== "UP"
+    ) {
+      direction = "DOWN";
+    }
+
+    if (
+      newDirection === "LEFT" &&
+      direction !== "RIGHT"
+    ) {
+      direction = "LEFT";
+    }
+
+    if (
+      newDirection === "RIGHT" &&
+      direction !== "LEFT"
+    ) {
+      direction = "RIGHT";
+    }
+
+  }
+
+
+  // MOBILE BUTTONS
+
+  document
+    .querySelectorAll<HTMLButtonElement>(".direction-btn")
+    .forEach((button) => {
+
+      button.addEventListener("click", (event) => {
+
+        event.preventDefault();
+
+        const newDirection =
+          button.dataset.dir;
+
+        if (newDirection) {
+          changeDirection(newDirection);
+        }
+
+      });
+
+      button.addEventListener("touchstart", (event) => {
+
+        event.preventDefault();
+
+        const newDirection =
+          button.dataset.dir;
+
+        if (newDirection) {
+          changeDirection(newDirection);
+        }
+
+      }, { passive: false });
+
+    });
+
+
+  // KEYBOARD
+
+  function handleKey(event: KeyboardEvent) {
+
+    if (
+      event.key === "ArrowUp" ||
+      event.key === "w" ||
+      event.key === "W"
+    ) {
+
+      event.preventDefault();
+
+      changeDirection("UP");
+
+    }
+
+    if (
+      event.key === "ArrowDown" ||
+      event.key === "s" ||
+      event.key === "S"
+    ) {
+
+      event.preventDefault();
+
+      changeDirection("DOWN");
+
+    }
+
+    if (
+      event.key === "ArrowLeft" ||
+      event.key === "a" ||
+      event.key === "A"
+    ) {
+
+      event.preventDefault();
+
+      changeDirection("LEFT");
+
+    }
+
+    if (
+      event.key === "ArrowRight" ||
+      event.key === "d" ||
+      event.key === "D"
+    ) {
+
+      event.preventDefault();
+
+      changeDirection("RIGHT");
+
+    }
+
+  }
+
+
+  document.addEventListener(
+    "keydown",
+    handleKey
+  );
+
 
   // MOVE SNAKE
 
@@ -321,37 +441,24 @@ function showSnake() {
 
     if (gameOver) return;
 
-
     const head = {
       ...snake[0]
     };
 
-
     if (direction === "UP") {
-
       head.y--;
-
     }
-
 
     if (direction === "DOWN") {
-
       head.y++;
-
     }
-
 
     if (direction === "LEFT") {
-
       head.x--;
-
     }
 
-
     if (direction === "RIGHT") {
-
       head.x++;
-
     }
 
 
@@ -378,12 +485,10 @@ function showSnake() {
 
       gameOver = true;
 
-
       const message =
         document.querySelector(
           "#snakeMessage"
         );
-
 
       if (message) {
 
@@ -399,7 +504,6 @@ function showSnake() {
 
         `;
 
-
         document
           .querySelector(
             "#restartSnake"
@@ -411,6 +515,10 @@ function showSnake() {
 
       }
 
+      document.removeEventListener(
+        "keydown",
+        handleKey
+      );
 
       return;
 
@@ -429,9 +537,7 @@ function showSnake() {
 
       score += 10;
 
-
       food = {
-
         x: Math.floor(
           Math.random() * 20
         ),
@@ -439,7 +545,6 @@ function showSnake() {
         y: Math.floor(
           Math.random() * 20
         )
-
       };
 
     }
@@ -456,65 +561,9 @@ function showSnake() {
   }
 
 
-
-  // KEYBOARD
-
-  function handleKey(
-    event: KeyboardEvent
-  ) {
-
-    if (
-      event.key === "ArrowUp" &&
-      direction !== "DOWN"
-    ) {
-
-      direction = "UP";
-
-    }
-
-
-    if (
-      event.key === "ArrowDown" &&
-      direction !== "UP"
-    ) {
-
-      direction = "DOWN";
-
-    }
-
-
-    if (
-      event.key === "ArrowLeft" &&
-      direction !== "RIGHT"
-    ) {
-
-      direction = "LEFT";
-
-    }
-
-
-    if (
-      event.key === "ArrowRight" &&
-      direction !== "LEFT"
-    ) {
-
-      direction = "RIGHT";
-
-    }
-
-  }
-
-
-  document.addEventListener(
-    "keydown",
-    handleKey
-  );
-
-
   // START GAME
 
   drawBoard();
-
 
   const gameLoop =
     setInterval(() => {
